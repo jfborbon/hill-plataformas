@@ -10,4 +10,16 @@ export class AuthController {
   login(@Body() body: { username: string; password: string }) {
     return this.authService.login(body.username, body.password);
   }
+
+  @Post('register')
+  @HttpCode(201)
+  register(@Body() body: { username: string; password: string }) {
+    return this.authService.register(body.username, body.password);
+  }
+
+  @Post('logout')
+  @HttpCode(200)
+  logout(@Body() body: { username: string }) {
+    return this.authService.logout(body.username);
+  }
 }

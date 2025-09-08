@@ -1,8 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+
+interface User {
+  username: string;
+  password: string;
+}
 
 @Injectable()
 export class AuthService {
-  private readonly users = [
+  private readonly users: User[] = [
     { username: 'admin', password: '1234' },
     { username: 'juan', password: 'abcd' },
   ];
@@ -20,5 +25,28 @@ export class AuthService {
       message: 'Login exitoso',
       user: { username: user.username },
     };
+  }
+
+  register(username: string, password: string) {
+    if (!username || !password) {
+      throw new BadRequestException('El username y password son obligatorios');
+    }
+
+    const existingUser = this.users.find((u) => u.username === username);
+    if (existingUser) {
+      throw new BadRequestException('El usuario ya existe');
+    }
+
+      const newUser: User = { username, password };
+    this.users.push(newUser);
+
+    return {
+      message: 'Usuario registrado exitosamente',
+      user: { username: newUser.username },
+    };
+  }
+
+  logout(username: string) {
+    return { message: `El usuario ${username} cerró sesión correctamente` };
   }
 }
