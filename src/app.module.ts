@@ -10,9 +10,10 @@ import { RecommendationsModule } from './recommendations/recommendations.module'
 import { AchievementsModule } from './achievements/achievements.module';
 import { AdminModule } from './admin/admin.module';
 import { SupportModule } from './support/support.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
-  imports: [AuthModule, HabitsModule, NotificationsModule, RecommendationsModule, AchievementsModule, AdminModule, SupportModule],
+  imports: [AuthModule, HabitsModule, NotificationsModule, RecommendationsModule, AchievementsModule, AdminModule, SupportModule, DashboardModule],
   controllers: [AppController],
   providers: [AppService],
 })
