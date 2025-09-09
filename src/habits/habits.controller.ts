@@ -2,6 +2,7 @@ import { Controller, Post, Get, Body, Query, Param, Put, Delete } from '@nestjs/
 import { HabitsService } from './habits.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
+import { TrackHabitDto } from './dto/track-habit.dto';
 
 @Controller('habits')
 export class HabitsController {
@@ -30,5 +31,15 @@ export class HabitsController {
     @Delete(':id')
     deleteHabit(@Param('id') id: string) {
         return this.habitsService.deleteHabit(id);
+    }
+
+    @Post(':id/track')
+    trackHabit(@Param('id') id: string, @Body() body: TrackHabitDto) {
+        return this.habitsService.trackHabit(id, body);
+    }
+
+    @Get(':id/history')
+    getHabitHistory(@Param('id') id: string) {
+        return this.habitsService.getHabitHistory(id);
     }
 }

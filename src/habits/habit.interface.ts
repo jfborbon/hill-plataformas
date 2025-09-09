@@ -13,4 +13,5 @@ export interface Habit {
     goal?: number;
     unit?: string;
     reminders?: { time: string; repeat: string }[];
+    history?: { date: string; value?: number }[];
 }

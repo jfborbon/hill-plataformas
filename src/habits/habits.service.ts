@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Habit } from './habit.interface';
 import { UpdateHabitDto } from './dto/update-habit.dto';
+import { TrackHabitDto } from './dto/track-habit.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -61,5 +62,33 @@ export class HabitsService {
 
     this.habits.splice(index, 1); // eliminar del array
     return { message: `Hábito con id ${id} eliminado correctamente` };
+  }
+
+  trackHabit(id: string, trackData: TrackHabitDto): Habit {
+    const habit = this.habits.find((h) => h.id === id);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+
+    if (!habit.history) {
+      habit.history = [];
+    }
+
+    habit.history.push({
+      date: trackData.date,
+      value: trackData.value,
+    });
+
+    habit.updatedAt = new Date();
+    return habit;
+  }
+
+  getHabitHistory(id: string): { date: string; value?: number }[] {
+    const habit = this.habits.find((h) => h.id === id);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+
+    return habit.history ?? [];
   }
 }
