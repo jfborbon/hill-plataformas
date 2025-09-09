@@ -1,8 +1,9 @@
-import { Controller, Post, Get, Body, Query, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { TrackHabitDto } from './dto/track-habit.dto';
+import { AddReminderDto } from './dto/add-reminder.dto';
 
 @Controller('habits')
 export class HabitsController {
@@ -41,5 +42,21 @@ export class HabitsController {
     @Get(':id/history')
     getHabitHistory(@Param('id') id: string) {
         return this.habitsService.getHabitHistory(id);
+    }
+
+    // recordatorios
+    @Post(':id/reminders')
+    addReminder(@Param('id') id: string, @Body() body: AddReminderDto) {
+        return this.habitsService.addReminder(id, body);
+    }
+
+    @Get(':id/reminders')
+    getReminders(@Param('id') id: string) {
+        return this.habitsService.getReminders(id);
+    }
+
+    @Delete(':id/reminders/:index')
+    deleteReminder(@Param('id') habitId: string, @Param('index', ParseIntPipe) index: number) {
+        return this.habitsService.deleteReminder(habitId, index);
     }
 }

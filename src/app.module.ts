@@ -5,9 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { HabitsModule } from './habits/habits.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-  imports: [AuthModule, HabitsModule],
+  imports: [AuthModule, HabitsModule, NotificationsModule],
   controllers: [AppController],
   providers: [AppService],
 })

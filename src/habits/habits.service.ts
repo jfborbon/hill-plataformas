@@ -2,6 +2,7 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 import { Habit } from './habit.interface';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { TrackHabitDto } from './dto/track-habit.dto';
+import { AddReminderDto } from './dto/add-reminder.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -90,5 +91,46 @@ export class HabitsService {
     }
 
     return habit.history ?? [];
+  }
+
+  addReminder(id: string, reminder: AddReminderDto): Habit {
+    const habit = this.habits.find((h) => h.id === id);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+
+    if (!habit.reminders) {
+      habit.reminders = [];
+    }
+
+    habit.reminders.push(reminder);
+    habit.updatedAt = new Date();
+
+    return habit;
+  }
+
+  getReminders(id: string): { time: string; repeat: string }[] {
+    const habit = this.habits.find((h) => h.id === id);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+
+    return habit.reminders ?? [];
+  }
+
+  deleteReminder(habitId: string, index: number): Habit {
+    const habit = this.habits.find((h) => h.id === habitId);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${habitId} no encontrado`);
+    }
+
+    if (!habit.reminders || index < 0 || index >= habit.reminders.length) {
+      throw new NotFoundException(`Recordatorio en índice ${index} no encontrado`);
+    }
+
+    habit.reminders.splice(index, 1);
+    habit.updatedAt = new Date();
+
+    return habit;
   }
 }
