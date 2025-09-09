@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Habit } from './habit.interface';
+import { UpdateHabitDto } from './dto/update-habit.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -39,6 +40,16 @@ export class HabitsService {
     if (!habit) {
       throw new NotFoundException(`Hábito con id ${id} no encontrado`);
     }
+    return habit;
+  }
+
+  updateHabit(id: string, updates: UpdateHabitDto): Habit {
+    const habit = this.habits.find((h) => h.id === id);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+
+    Object.assign(habit, updates, { updatedAt: new Date() });
     return habit;
   }
 }

@@ -1,6 +1,4 @@
 import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
-import { Habit } from 'src/habits/habit.interface';
-import { v4 as uuidv4 } from 'uuid';
 
 interface User {
   username: string;
