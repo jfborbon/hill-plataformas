@@ -52,4 +52,14 @@ export class HabitsService {
     Object.assign(habit, updates, { updatedAt: new Date() });
     return habit;
   }
+
+  deleteHabit(id: string): { message: string } {
+    const index = this.habits.findIndex((h) => h.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+
+    this.habits.splice(index, 1); // eliminar del array
+    return { message: `Hábito con id ${id} eliminado correctamente` };
+  }
 }
