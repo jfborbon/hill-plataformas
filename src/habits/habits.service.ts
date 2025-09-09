@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Habit } from './habit.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -32,5 +32,13 @@ export class HabitsService {
 
   getAllHabits(userId: string): Habit[] {
     return this.habits.filter(h => h.userId === userId);
+  }
+
+  getHabitById(id: string): Habit {
+    const habit = this.habits.find((h) => h.id === id);
+    if (!habit) {
+      throw new NotFoundException(`Hábito con id ${id} no encontrado`);
+    }
+    return habit;
   }
 }
