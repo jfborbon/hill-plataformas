@@ -4,19 +4,19 @@ import { UpdatePreferencesDto } from './dto/update-preferences.dto';
 
 @Injectable()
 export class NotificationsService {
-  private preferences: NotificationPreferences[] = [];
+    private preferences: NotificationPreferences[] = [];
 
-  updatePreferences(data: UpdatePreferencesDto): NotificationPreferences {
+    updatePreferences(data: UpdatePreferencesDto): NotificationPreferences {
     let userPreferences = this.preferences.find((p) => p.userId === data.userId);
 
     if (!userPreferences) {
         userPreferences = {
-        userId: data.userId,
-        email: data.email ?? true,
-        push: data.push ?? true,
-        sms: data.sms ?? false,
-        reminderTimes: data.reminderTimes ?? [],
-      };
+            userId: data.userId,
+            email: data.email ?? true,
+            push: data.push ?? true,
+            sms: data.sms ?? false,
+            reminderTimes: data.reminderTimes ?? [],
+        };
         this.preferences.push(userPreferences);
     } 
     else {
